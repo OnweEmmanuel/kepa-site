@@ -30,6 +30,8 @@ const isHome = Astro.url.pathname === '/';
     <!-- ICO/PNG for browsers that skip SVG icons (Safari) and for /favicon.ico requests. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <!-- Google Search wants a square icon that's a multiple of 48 px. -->
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
@@ -41,6 +43,21 @@ const isHome = Astro.url.pathname === '/';
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
 
+    {
+      isHome && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            // Google's site name: without it, results show the host's name ("Cloudflare").
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: site.name,
+            alternateName: ['Kepa app', 'getkepa'],
+            url: Astro.site?.toString(),
+          })}
+        />
+      )
+    }
     {
       isHome && (
         <script
