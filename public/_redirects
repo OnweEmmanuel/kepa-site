@@ -1,0 +1,4 @@
+# Google Search Console verification: serve the file at its exact .html
+# address. Without this, Cloudflare Pages 308-redirects *.html to the
+# extensionless URL, and Google may not follow the redirect.
+/google9f6a46595ac9b1e1.html /google9f6a46595ac9b1e1 200
