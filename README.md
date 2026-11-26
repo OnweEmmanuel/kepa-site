@@ -1,6 +1,6 @@
 # kepa-site
 
-The website for [Kepa](https://kepa.pages.dev), a free, private tracker for
+The website for [Kepa](https://getkepa.pages.dev), a free, private tracker for
 subscriptions, debit orders, renewals and warranties.
 
 Astro 5 + TypeScript, static output, no client framework. Plain CSS with

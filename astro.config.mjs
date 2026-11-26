@@ -1,9 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Change `site` when the Cloudflare Pages URL (or a custom domain) is final.
+// The Cloudflare Pages URL. Change it if a custom domain is added.
 export default defineConfig({
-  site: 'https://kepa.pages.dev',
+  site: 'https://getkepa.pages.dev',
   trailingSlash: 'ignore',
   build: { format: 'directory' },
 });
