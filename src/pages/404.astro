@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Base title="Page not found | Kepa">
+  <section class="section">
+    <div class="wrap nf">
+      <p class="label label--dot">404</p>
+      <h1 class="h2">This page went quiet. <span class="muted">Nothing is due here.</span></h1>
+      <a class="btn btn--primary" href="/">Back to Kepa <span class="arrow"><Icon name="arrow" /></span></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-5);
+    min-height: 50vh;
+    align-content: center;
+  }
+</style>

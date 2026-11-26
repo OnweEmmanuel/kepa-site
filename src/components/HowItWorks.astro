@@ -1,0 +1,77 @@
+---
+const steps = [
+  {
+    t: 'Add or import',
+    b: 'Pick from templates for local services, type in your own, or import a bank statement and let Kepa find what repeats.',
+  },
+  {
+    t: 'Get reminded',
+    b: 'Choose how early and at what time. Kepa reminds you before each charge, trial end, cancel-by day and warranty deadline.',
+  },
+  {
+    t: 'Stay ahead',
+    b: "Mark things paid, see what's left before payday, and spot price increases and new subscriptions as they appear.",
+  },
+];
+---
+
+<section class="section how" aria-labelledby="how-title">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <p class="label label--dot">How it works</p>
+      <h2 id="how-title" class="h2">Set it up once. <span class="muted">Kepa remembers.</span></h2>
+    </header>
+    <ol class="steps">
+      {
+        steps.map((s, i) => (
+          <li class="reveal" style={`--i:${i}`}>
+            <span class="n mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.t}</h3>
+            <p>{s.b}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how {
+    border-top: 1px solid var(--line);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-6);
+  }
+
+  li {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--ink-muted);
+  }
+
+  .n {
+    font-size: var(--t-small);
+    color: var(--primary-text);
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 760px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

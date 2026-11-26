@@ -1,0 +1,42 @@
+---
+import KepaMark from './KepaMark.astro';
+import Icon from './Icon.astro';
+import { primaryCta, site } from '../site';
+---
+
+<section class="section final" aria-labelledby="final-title">
+  <div class="wrap">
+    <div class="box reveal">
+      <KepaMark size={64} />
+      <h2 id="final-title" class="h2">Know what's coming <span class="muted">before it goes.</span></h2>
+      <p class="lede">
+        {
+          site.stage === 'live'
+            ? 'Free on Google Play for Android. No account, no ads, nothing leaves your phone.'
+            : 'Kepa is in closed testing on Google Play. Join the test group, then install it from the Play Store.'
+        }
+      </p>
+      <a class="btn btn--primary" href={primaryCta.href} rel="noopener">
+        {primaryCta.label}
+        <span class="arrow"><Icon name="arrow" /></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .box {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-5);
+    text-align: center;
+    padding: clamp(var(--s-7), 8vw, var(--s-9)) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    background: var(--surface);
+  }
+
+  .lede {
+    max-width: 30rem;
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+// A wireframe globe that turns slowly, with orange dots on a few of the
+// cities Kepa is made for. Decorative: faint lines, aria-hidden, paused
+// off-screen, and still (drawn once) when reduced motion is on.
+const R = 280;
+const C = 300;
+const parallels = [-60, -40, -20, 0, 20, 40, 60].map((lat) => {
+  const rad = (lat * Math.PI) / 180;
+  return { y: C - R * Math.sin(rad), half: R * Math.cos(rad) };
+});
+const meridians = 12;
+// [lat, lon] for the dots: Cape Town, Johannesburg, Windhoek, Lusaka, Lagos, Accra, Dakar.
+const cities = [
+  [-33.9, 18.4],
+  [-26.2, 28.0],
+  [-22.6, 17.1],
+  [-15.4, 28.3],
+  [6.5, 3.4],
+  [5.6, -0.2],
+  [14.7, -17.4],
+];
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={['globe', className]}
+  viewBox="0 0 600 600"
+  aria-hidden="true"
+  data-globe
+  data-cities={JSON.stringify(cities)}
+>
+  <g class="lines" transform="rotate(-18 300 300)">
+    <circle cx={C} cy={C} r={R}></circle>
+    {parallels.map((p) => <line x1={C - p.half} x2={C + p.half} y1={p.y} y2={p.y}></line>)}
+    {
+      Array.from({ length: meridians }, (_, i) => (
+        <ellipse
+          class="meridian"
+          cx={C}
+          cy={C}
+          rx={Math.abs(R * Math.sin((i * Math.PI) / meridians + 0.35))}
+          ry={R}
+        />
+      ))
+    }
+    {cities.map(() => <circle class="city" r="4.5" cx={C} cy={C} opacity="0"></circle>)}
+  </g>
+</svg>
+
+<style>
+  .globe {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+
+  .lines {
+    fill: none;
+    stroke: var(--ink);
+    stroke-opacity: 0.16;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lines :global(.city) {
+    fill: var(--primary);
+    stroke: none;
+  }
+</style>
+
+<script>
+  const svg = document.querySelector<SVGSVGElement>('[data-globe]');
+  if (svg) {
+    const R = 280;
+    const C = 300;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const meridians = Array.from(svg.querySelectorAll<SVGEllipseElement>('.meridian'));
+    const dots = Array.from(svg.querySelectorAll<SVGCircleElement>('.city'));
+    const cities: [number, number][] = JSON.parse(svg.dataset.cities ?? '[]');
+    const rad = (d: number) => (d * Math.PI) / 180;
+
+    // `spin` is the longitude facing the viewer, in radians.
+    const draw = (spin: number) => {
+      meridians.forEach((m, i) => {
+        const a = (i * Math.PI) / meridians.length - spin;
+        m.setAttribute('rx', Math.abs(R * Math.sin(a)).toFixed(1));
+      });
+      dots.forEach((d, i) => {
+        const [lat, lon] = cities[i];
+        const l = rad(lon) - spin;
+        const front = Math.cos(rad(lat)) * Math.cos(l); // > 0 means facing us
+        d.setAttribute('cx', (C + R * Math.cos(rad(lat)) * Math.sin(l)).toFixed(1));
+        d.setAttribute('cy', (C - R * Math.sin(rad(lat))).toFixed(1));
+        d.setAttribute('opacity', front > 0 ? Math.min(1, front * 2.2).toFixed(2) : '0');
+      });
+    };
+
+    // Start with Africa facing us (longitude ~15°E).
+    draw(rad(15));
+
+    if (!reduced) {
+      // Sways ±55° around Africa over ~90 s, so the dots stay in view.
+      // The frame loop runs only while the globe is on screen.
+      let frame = 0;
+      const loop = (now: number) => {
+        draw(rad(15) + Math.sin(now / 14000) * rad(55));
+        frame = requestAnimationFrame(loop);
+      };
+      new IntersectionObserver(([e]) => {
+        cancelAnimationFrame(frame);
+        if (e.isIntersecting) frame = requestAnimationFrame(loop);
+      }).observe(svg);
+    }
+  }
+</script>

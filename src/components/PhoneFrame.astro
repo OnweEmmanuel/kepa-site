@@ -1,0 +1,73 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+// `shot` names a screenshot in public/images: `<shot>.webp` is the dark
+// one; `<shot>-light.webp`, when it exists, is shown in light mode.
+// Until a light one is added, light mode shows the dark screenshot.
+interface Props {
+  shot: string;
+  alt: string;
+  eager?: boolean;
+  class?: string;
+}
+const { shot, alt, eager = false, class: className } = Astro.props;
+const dark = `/images/${shot}.webp`;
+const light = existsSync(join(process.cwd(), 'public', 'images', `${shot}-light.webp`))
+  ? `/images/${shot}-light.webp`
+  : null;
+const imgProps = {
+  alt,
+  width: 720,
+  height: 1440,
+  loading: eager ? ('eager' as const) : ('lazy' as const),
+  decoding: 'async' as const,
+};
+---
+
+<figure class:list={['phone', className]}>
+  <img src={dark} class:list={light ? 'shot-dark' : undefined} fetchpriority={eager ? 'high' : 'auto'} {...imgProps} />
+  {light && <img src={light} class="shot-light" {...imgProps} />}
+</figure>
+
+<style>
+  .phone {
+    position: relative;
+    aspect-ratio: 1 / 2;
+    padding: 2.2%;
+    border-radius: var(--r-phone);
+    background: var(--surface);
+    border: 1px solid var(--phone-edge);
+    box-shadow: var(--shadow-float);
+  }
+
+  .phone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: calc(var(--r-phone) - 8px);
+    background: var(--canvas);
+  }
+
+  .shot-light {
+    display: none;
+  }
+
+  :global(:root[data-theme='light']) .shot-light {
+    display: block;
+  }
+
+  :global(:root[data-theme='light']) .shot-dark {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :global(:root:not([data-theme='dark'])) .shot-light {
+      display: block;
+    }
+
+    :global(:root:not([data-theme='dark'])) .shot-dark {
+      display: none;
+    }
+  }
+</style>

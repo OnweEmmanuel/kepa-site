@@ -1,0 +1,22 @@
+{
+  "name": "kepa-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview --port 4321",
+    "sync-policy": "cp ../kepa/docs/privacy-policy.md src/content/privacy-policy.md"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "astro": "^5.18.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/node": "^22.20.7",
+    "typescript": "^5.9.3"
+  }
+}

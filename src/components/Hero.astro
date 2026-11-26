@@ -1,0 +1,466 @@
+---
+import PhoneFrame from './PhoneFrame.astro';
+import KepaMark from './KepaMark.astro';
+import Icon from './Icon.astro';
+import { primaryCta, site } from '../site';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap layout">
+    <div class="copy">
+      <p class="label label--dot enter" style="--i:1">Android · Free · No sign-up</p>
+      <h1 id="hero-title" class="title">
+        <span class="line"><span style="--i:2">Never caught</span></span>
+        <span class="line"><span style="--i:3">by a debit</span></span>
+        <span class="line"><span style="--i:4">order <em>again.</em></span></span>
+      </h1>
+      <p class="lede enter" style="--i:5">
+        Kepa keeps your subscriptions, debit orders, renewals and warranties in one calm place, and reminds
+        you before money leaves your account.
+      </p>
+      <div class="actions enter" style="--i:6">
+        <a class="btn btn--primary" href={primaryCta.href} rel="noopener">
+          {primaryCta.label}
+          <span class="arrow"><Icon name="arrow" /></span>
+        </a>
+        <a class="btn btn--ghost" href="#features">See what it does</a>
+      </div>
+      {
+        site.stage === 'testing' && (
+          <p class="note enter" style="--i:7">
+            In closed testing on Google Play. Join the group, then install from the Play Store.
+          </p>
+        )
+      }
+    </div>
+
+    <div class="visual" data-hero-visual>
+      <div class="tilt" data-tilt>
+        <PhoneFrame
+          class="hero-phone"
+          shot="home"
+          alt="Kepa's Home screen: this week's charges, payday countdown and what's still to pay this month."
+          eager
+        />
+        <div class="notice" aria-hidden="true">
+          <div class="notice-card" data-notice>
+            <span class="notice-mark">
+              <KepaMark size={28} />
+              <span class="ping" data-ping></span>
+            </span>
+            <div>
+              <p class="notice-head"><span>Kepa</span><span>now</span></p>
+              <p class="notice-title" data-notice-title>Gym membership goes off tomorrow</p>
+              <p class="notice-amount mono" data-notice-amount>R450.00 · debit order</p>
+            </div>
+          </div>
+        </div>
+        <p class="pill mono" aria-hidden="true">Trial · 3 days</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-band">
+    <dl class="wrap stats">
+      <div class="enter" style="--i:8"><dt class="label">Costs</dt><dd class="mono">R0, forever</dd></div>
+      <div class="enter" style="--i:9"><dt class="label">Accounts</dt><dd class="mono">None needed</dd></div>
+      <div class="enter" style="--i:10"><dt class="label">Countries</dt><dd class="mono">26, own currency</dd></div>
+      <div class="enter" style="--i:11"><dt class="label">Your data</dt><dd class="mono">Stays on your phone</dd></div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(var(--s-6), 6vw, var(--s-8));
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+    gap: var(--s-7);
+  }
+
+  .copy {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+  }
+
+  .title {
+    font-size: var(--t-h1);
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+    margin-block: var(--s-2) var(--s-2);
+  }
+
+  .title .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    white-space: nowrap;
+  }
+
+  .title .line > span {
+    display: inline-block;
+    animation: line-up 1s var(--ease-out) both;
+    animation-delay: calc(var(--i) * 110ms);
+  }
+
+  .title em {
+    font-style: normal;
+    color: var(--ink-muted);
+  }
+
+  @keyframes line-up {
+    from {
+      transform: translateY(110%);
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-2);
+  }
+
+  .note {
+    font-size: var(--t-small);
+    color: var(--ink-muted);
+    max-width: 30rem;
+  }
+
+  /* Phone + floating reminder */
+  .visual {
+    position: relative;
+    justify-self: center;
+    width: min(100%, 340px);
+    padding-block: var(--s-6);
+  }
+
+  .hero-phone {
+    animation: phone-in 1.3s var(--ease-out) 0.25s both;
+  }
+
+  @keyframes phone-in {
+    from {
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+      filter: blur(8px);
+    }
+  }
+
+  /* Pointer tilt (desktop): --rx/--ry are set by the script. The notice
+     and pill sit in front of the phone in 3D, so they move more. */
+  .tilt {
+    position: relative;
+    transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .notice {
+    position: absolute;
+    top: 16%;
+    left: -10%;
+    width: 104%;
+    max-width: 330px;
+    transform: translateZ(70px);
+  }
+
+  .notice-card {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-float);
+    animation: notice-drop 0.9s var(--ease-out) 1.35s both;
+  }
+
+  .notice-mark {
+    position: relative;
+    flex: none;
+    display: grid;
+  }
+
+  .notice-mark :global(.kepa-mark) {
+    padding: 3px;
+    border-radius: var(--r-small);
+    background: var(--canvas);
+  }
+
+  /* The reminder "ping": a ring that leaves the mark's dot. */
+  .ping {
+    position: absolute;
+    top: 3px;
+    left: 19px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1.5px solid var(--primary);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .notice-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--t-micro);
+    color: var(--ink-muted);
+  }
+
+  .notice-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .notice-amount {
+    font-size: var(--t-small);
+    color: var(--ink-muted);
+  }
+
+  @keyframes notice-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-28px) scale(0.96);
+    }
+  }
+
+  .pill {
+    position: absolute;
+    right: -8%;
+    bottom: 22%;
+    padding: var(--s-2) var(--s-4);
+    border-radius: var(--r-pill);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: var(--t-micro);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-float);
+    transform: translateZ(40px);
+    animation: pill-in 0.8s var(--ease-out) 1.7s both;
+  }
+
+  @keyframes pill-in {
+    from {
+      opacity: 0;
+      transform: translateZ(40px) translateY(-20px) scale(0.96);
+    }
+  }
+
+  /* Stats strip */
+  /* The lines above and below the stats run edge to edge, like the
+     section borders under them. */
+  .stats-band {
+    margin-top: var(--s-7);
+    border-top: 1px solid var(--line);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stats > div {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--s-2);
+    padding: var(--s-5) var(--s-4) var(--s-5) 0;
+  }
+
+  /* nth-child, not "div + div": Astro's scoping makes sibling selectors
+     outrank the mobile overrides below. */
+  .stats > div:nth-child(n + 2) {
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--line);
+  }
+
+  .stats dd {
+    font-size: 1.0625rem;
+    color: var(--ink);
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .visual {
+      width: min(72vw, 300px);
+    }
+
+    .notice {
+      left: -14%;
+      width: 128%;
+    }
+
+    .tilt {
+      transform: none;
+    }
+
+    .stats {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .stats > div:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    /* The line between the rows runs edge to edge, like the band's. */
+    .stats > div:nth-child(3)::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100vw;
+      right: -100vw;
+      height: 1px;
+      background: var(--line);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats dd {
+      font-size: 0.9375rem;
+    }
+
+    .title .line {
+      white-space: normal;
+    }
+
+    .actions {
+      width: 100%;
+    }
+
+    .actions .btn {
+      flex: 1 1 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .title .line > span,
+    .hero-phone,
+    .notice-card,
+    .pill {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { reduced, finePointer, watchInView, wait, spring, easeOut } from '../scripts/motion';
+
+  // Example reminders the hero cycles through, like real ones arriving.
+  const reminders = [
+    ['Gym membership goes off tomorrow', 'R450.00 · debit order'],
+    ['Free trial ends in 3 days', 'Then R449.99 a month'],
+    ['Licence disc is up for renewal', 'Renew by the 30th'],
+    ['Return window closes Tuesday', 'Headphones · warranty vault'],
+  ];
+
+  const visual = document.querySelector<HTMLElement>('[data-hero-visual]');
+  const tilt = document.querySelector<HTMLElement>('[data-tilt]');
+  const card = document.querySelector<HTMLElement>('[data-notice]');
+  const title = document.querySelector<HTMLElement>('[data-notice-title]');
+  const amount = document.querySelector<HTMLElement>('[data-notice-amount]');
+  const ping = document.querySelector<HTMLElement>('[data-ping]');
+  const phone = document.querySelector<HTMLElement>('.hero-phone');
+
+  if (visual && tilt && card && title && amount && ping && phone && !reduced) {
+    let visible = true;
+    watchInView(visual, (v) => (visible = v));
+
+    // The dot pings and the phone gives a small buzz as a reminder lands.
+    const arrive = () => {
+      ping.animate(
+        [
+          { opacity: 0.9, transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(5)' },
+        ],
+        { duration: 1000, easing: easeOut },
+      );
+      phone.animate(
+        [
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-2px) rotate(-0.4deg)' },
+          { transform: 'translateX(2px) rotate(0.4deg)' },
+          { transform: 'translateX(-1px)' },
+          { transform: 'translateX(0)' },
+        ],
+        { duration: 380, easing: 'linear' },
+      );
+    };
+
+    const cycle = async () => {
+      await wait(2000); // the first reminder drops in with the page's entrance
+      arrive();
+      let i = 0;
+      while (true) {
+        await wait(4800);
+        if (!visible || document.hidden) continue;
+        await card.animate(
+          [
+            { opacity: 1, transform: 'none' },
+            { opacity: 0, transform: 'translateY(-14px) scale(0.97)' },
+          ],
+          { duration: 320, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' },
+        ).finished;
+        i = (i + 1) % reminders.length;
+        [title.textContent, amount.textContent] = reminders[i];
+        await card.animate(
+          [
+            { opacity: 0, transform: 'translateY(-26px) scale(0.96)' },
+            { opacity: 1, transform: 'none' },
+          ],
+          { duration: 700, easing: spring, fill: 'forwards' },
+        ).finished;
+        arrive();
+      }
+    };
+    cycle();
+
+    // Desktop: the phone leans toward the pointer, eased so it feels weighted.
+    if (finePointer) {
+      let tx = 0,
+        ty = 0,
+        x = 0,
+        y = 0,
+        frame = 0;
+      // Eases toward the pointer and stops once it has caught up, so no
+      // frame loop runs while the mouse is still or the hero is off screen.
+      const step = () => {
+        x += (tx - x) * 0.08;
+        y += (ty - y) * 0.08;
+        tilt.style.setProperty('--ry', `${x.toFixed(2)}deg`);
+        tilt.style.setProperty('--rx', `${y.toFixed(2)}deg`);
+        frame = Math.abs(tx - x) + Math.abs(ty - y) > 0.01 ? requestAnimationFrame(step) : 0;
+      };
+      window.addEventListener(
+        'pointermove',
+        (e) => {
+          if (!visible) return;
+          const r = visual.getBoundingClientRect();
+          const dx = (e.clientX - (r.left + r.width / 2)) / window.innerWidth;
+          const dy = (e.clientY - (r.top + r.height / 2)) / window.innerHeight;
+          tx = Math.max(-1, Math.min(1, dx * 2)) * 7;
+          ty = Math.max(-1, Math.min(1, dy * 2)) * -5;
+          if (!frame) frame = requestAnimationFrame(step);
+        },
+        { passive: true },
+      );
+    }
+  }
+</script>

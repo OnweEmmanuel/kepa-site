@@ -1,0 +1,30 @@
+---
+// The Kepa mark: a lowercase k in one orange stroke that loops through
+// itself, with a silver dot (the moment a reminder fires). Same geometry
+// as KepaMarkPainter in lib/shared/widgets/kepa_mark.dart.
+interface Props {
+  size?: number;
+  label?: string;
+  class?: string;
+}
+const { size = 28, label, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['kepa-mark', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+>
+  <path
+    d="M28.5 18v64M28.5 70C38.5 62 58.5 52 58.5 38c0-12-18-12-18 2 0 14 14 24 24 42"
+    fill="none"
+    stroke="var(--primary)"
+    stroke-width="11"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+  <circle cx="66.5" cy="20" r="5" fill="var(--ink)"></circle>
+</svg>

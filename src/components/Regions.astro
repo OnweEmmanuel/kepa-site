@@ -1,0 +1,144 @@
+---
+import { regions } from '../site';
+import Globe from './Globe.astro';
+---
+
+<section class="section regions" aria-labelledby="regions-title">
+  <div class="wrap layout">
+    <header class="section-head reveal">
+      <div class="globe-wrap" aria-hidden="true"><Globe /></div>
+      <p class="label label--dot">Made for here</p>
+      <h2 id="regions-title" class="h2">Your country. <span class="muted">Your currency.</span></h2>
+      <p class="lede">
+        Pick your country and Kepa uses its currency, with templates for local services. Track things billed in
+        US dollars beside them. Kepa never converts amounts, so the numbers stay the ones on your statement.
+      </p>
+    </header>
+    <div class="lists">
+      {
+        regions.map((r, ri) => (
+          <div class="region reveal" style={`--i:${ri}`}>
+            <p class="label">
+              {r.name} · <span class="mono" data-count={r.countries.length}>{r.countries.length}</span>
+            </p>
+            <ul>
+              {r.countries.map(([name, code]) => (
+                <li>
+                  <span>{name}</span>
+                  <span class="mono code">{code}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+      <p class="elsewhere reveal">
+        Somewhere else? Choose <strong>Somewhere else</strong> and Kepa works in US dollars.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .regions {
+    border-top: 1px solid var(--line);
+    /* Keeps the globe inside the section. clip (not hidden) so the sticky
+       heading still sticks. */
+    overflow: clip;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--s-7);
+    align-items: start;
+  }
+
+  .section-head {
+    margin-bottom: 0;
+    position: sticky;
+    top: 104px;
+    isolation: isolate;
+  }
+
+  /* The globe sits behind the heading, faint enough to read over, and
+     fades out at its edges. */
+  .globe-wrap {
+    position: absolute;
+    z-index: -1;
+    top: 100%;
+    left: 40%;
+    width: min(620px, 120%);
+    transform: translate(-50%, -50%);
+    mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
+  }
+
+  .lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-6);
+  }
+
+  ul {
+    margin-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-block: var(--s-2);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .code {
+    font-size: var(--t-small);
+    color: var(--ink-muted);
+  }
+
+  .elsewhere {
+    grid-column: 1 / -1;
+    color: var(--ink-muted);
+  }
+
+  .elsewhere strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .section-head {
+      position: relative;
+      top: auto;
+    }
+
+    /* Phones: smaller, tucked top-right beside the short heading lines,
+       so the dots never sit on the paragraph. */
+    .globe-wrap {
+      top: -150px;
+      left: auto;
+      right: -30%;
+      width: min(340px, 85%);
+      transform: none;
+      opacity: 0.8;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .lists {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { countUps } from '../scripts/motion';
+  countUps(document.querySelector('.regions') ?? document);
+</script>

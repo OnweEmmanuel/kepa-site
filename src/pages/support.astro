@@ -1,0 +1,228 @@
+---
+import Base from '../layouts/Base.astro';
+import FaqList from '../components/FaqList.astro';
+import Icon from '../components/Icon.astro';
+import { faq } from '../faq';
+import { site } from '../site';
+
+// Same steps the app shows in Settings → Reminders (batterySteps* in app_en.arb).
+const brands = [
+  {
+    name: 'Samsung',
+    steps: [
+      'Open Settings → Apps → Kepa → Battery and choose Unrestricted.',
+      "In Settings → Battery → Background usage limits, check Kepa isn't under Sleeping or Deep sleeping apps.",
+    ],
+  },
+  {
+    name: 'Xiaomi, Redmi, POCO',
+    steps: ['Open Settings → Apps → Manage apps → Kepa.', 'Turn on Autostart.', 'Under Battery saver, choose No restrictions.'],
+  },
+  {
+    name: 'Huawei, Honor',
+    steps: [
+      'Open Settings → Battery → App launch.',
+      'Find Kepa and turn off Manage automatically.',
+      'Leave Auto-launch and Run in background on.',
+    ],
+  },
+  {
+    name: 'Oppo, Realme, OnePlus',
+    steps: [
+      'Open Settings → Apps → Kepa → Battery usage.',
+      'Turn on Allow background activity.',
+      'Turn on Allow auto launch if you see it.',
+    ],
+  },
+  {
+    name: 'Vivo',
+    steps: [
+      'Open Settings → Battery → Background power consumption management.',
+      'Set Kepa to Allow high background power consumption.',
+      'In Settings → Apps → Autostart, turn on Kepa.',
+    ],
+  },
+  {
+    name: 'Tecno, Infinix, itel',
+    steps: [
+      'Open Settings → Battery → App launch management (or Phone Master → Power saving).',
+      'Find Kepa and allow Auto-launch and Run in background.',
+    ],
+  },
+  {
+    name: 'Other phones',
+    steps: ['Open Settings → Apps → Kepa → Battery.', 'Choose Unrestricted, or turn off battery optimisation for Kepa.'],
+  },
+];
+---
+
+<Base title="Support | Kepa" description="Answers to common questions about Kepa, and how to keep reminders on time on your phone.">
+  <section class="section top">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="label label--dot">Support</p>
+        <h1 class="h2">How can we help?</h1>
+        <p class="lede">
+          Most answers are below. If yours isn't, write to us. A real person reads every email.
+        </p>
+        <a class="btn btn--ghost" href={`mailto:${site.email}`}>
+          <Icon name="mail" size={18} />
+          {site.email}
+        </a>
+      </header>
+    </div>
+  </section>
+
+  <section class="section block" aria-labelledby="faq-title">
+    <div class="wrap layout">
+      <h2 id="faq-title" class="label">Common questions</h2>
+      <FaqList items={faq} />
+    </div>
+  </section>
+
+  <section id="reminders" class="section block" aria-labelledby="rem-title">
+    <div class="wrap layout">
+      <div class="side">
+        <h2 id="rem-title" class="label">Reminders on time</h2>
+      </div>
+      <div class="main">
+        <p class="h3">Late or missing reminders are almost always the phone's battery saver.</p>
+        <ol class="checks">
+          <li><span><strong>Allow notifications</strong> for Kepa when it asks, or in Settings → Apps → Kepa → Notifications.</span></li>
+          <li>
+            <span><strong>Turn on Alarms &amp; reminders</strong> (Settings → Apps → Kepa). Without it, Android can deliver
+            reminders up to an hour late.</span>
+          </li>
+          <li><span><strong>Let Kepa run in the background</strong> using the steps for your phone below.</span></li>
+        </ol>
+        <p class="muted small">Kepa checks all three in Settings → Reminders and tells you if something is off.</p>
+        <div class="brands">
+          {
+            brands.map((b) => (
+              <details>
+                <summary>
+                  <span>{b.name}</span>
+                  <Icon name="chevron" size={18} class="chev" />
+                </summary>
+                <ol>
+                  {b.steps.map((s) => (
+                    <li>{s}</li>
+                  ))}
+                </ol>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .top {
+    padding-bottom: var(--s-7);
+  }
+
+  .top .section-head {
+    margin-bottom: 0;
+    justify-items: start;
+  }
+
+  .block {
+    padding-block: var(--s-8);
+    border-top: 1px solid var(--line);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--s-7);
+    align-items: start;
+  }
+
+  .h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    margin-bottom: var(--s-5);
+    text-wrap: balance;
+  }
+
+  .checks {
+    display: grid;
+    gap: var(--s-3);
+    counter-reset: c;
+    margin-bottom: var(--s-4);
+  }
+
+  .checks li {
+    counter-increment: c;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    color: var(--ink-muted);
+  }
+
+  .checks li::before {
+    content: counter(c, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: var(--t-small);
+    color: var(--primary-text);
+    padding-top: 0.2em;
+  }
+
+  .checks strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .small {
+    font-size: var(--t-small);
+  }
+
+  .brands {
+    margin-top: var(--s-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .brands details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brands summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--s-4);
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .brands summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .brands :global(.chev) {
+    transition: transform var(--d-base) var(--ease-out);
+  }
+
+  .brands details[open] :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  .brands ol {
+    display: grid;
+    gap: var(--s-2);
+    padding: 0 0 var(--s-5) 1.4em;
+    list-style: decimal;
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+    }
+  }
+</style>

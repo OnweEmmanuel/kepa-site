@@ -1,0 +1,158 @@
+---
+import KepaMark from './KepaMark.astro';
+import { site } from '../site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="ghost" aria-hidden="true"><span>kepa</span></div>
+  <div class="wrap grid">
+    <div class="about">
+      <a class="brand" href="/" aria-label="Kepa home">
+        <KepaMark size={26} />
+        <span>kepa</span>
+      </a>
+      <p class="muted">
+        A free, private tracker for subscriptions, debit orders, renewals and warranties. Made for West
+        and Southern Africa.
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <p class="label">Kepa</p>
+      <ul>
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#private">Privacy by design</a></li>
+        <li><a href={site.stage === 'live' ? site.playUrl : site.testersUrl} rel="noopener">
+          {site.stage === 'live' ? 'Google Play' : 'Join the test'}
+        </a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Help">
+      <p class="label">Help</p>
+      <ul>
+        <li><a href="/support/">Support and FAQ</a></li>
+        <li><a href="/privacy/">Privacy policy</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email.split('@')[0]}@<wbr />{site.email.split('@')[1]}</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="fine">{site.amountsNote}</p>
+  </div>
+  <div class="wrap base">
+    <p class="label">© {year} Kepa</p>
+    <p class="label">Made by <a href={site.maker.url}>{site.maker.name}</a></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-8);
+  }
+
+  .site-footer > :not(.ghost) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Giant wordmark behind the footer: its box runs from the top of the
+     brand/Kepa/Help row to the bottom of the footer, and the word is sized
+     to that box (container units), so it never makes the footer taller. */
+  .ghost {
+    position: absolute;
+    inset: var(--s-8) 0 0 0;
+    container-type: size;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Geist's "kepa" spans 0.71em above the baseline and 0.15em below, so
+     0.86em of ink: 115cqh fills the box's height. The translate lifts the
+     baseline so the "p" ends just inside the footer. */
+  .ghost span {
+    font-size: min(115cqh, 44cqw);
+    font-weight: 800;
+    line-height: 0.78;
+    letter-spacing: -0.07em;
+    white-space: nowrap;
+    color: var(--ink);
+    opacity: 0.05;
+    transform: translateY(-0.125em);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--s-7);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    margin-bottom: var(--s-4);
+  }
+
+  .about p {
+    max-width: 26rem;
+    font-size: 0.9375rem;
+  }
+
+  nav ul {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+
+  nav a {
+    font-size: 0.9375rem;
+    color: var(--ink-muted);
+    transition: color var(--d-fast) var(--ease-state);
+  }
+
+  nav a:hover,
+  .base a:hover {
+    color: var(--ink);
+  }
+
+  .fine {
+    margin-top: var(--s-7);
+    max-width: 40rem;
+    font-size: var(--t-small);
+    color: var(--ink-muted);
+  }
+
+  .base {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    margin-top: var(--s-5);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .base a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .about {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

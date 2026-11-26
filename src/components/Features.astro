@@ -1,0 +1,473 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section id="features" class="section features" aria-labelledby="features-title">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <p class="label label--dot">What it does</p>
+      <h2 id="features-title" class="h2">Everything that leaves your account, <span class="muted">in one calm list.</span></h2>
+    </header>
+
+    <div class="bento">
+      <article class="card cell wide reveal" style="--i:0">
+        <div class="top">
+          <span class="ico"><Icon name="card" /></span>
+          <span class="label">01 / Subscriptions</span>
+        </div>
+        <h3>Subscriptions and debit orders</h3>
+        <p>Streaming, gym, insurance, phone contracts. See what's due this week, what's left this month, and get a reminder at the time you choose.</p>
+        <ul class="demo-list subs" aria-label="Example list" data-subs>
+          <li style="--i:0" data-first><span class="av" style="--c:#1546d9">S</span><span>Streaming</span><span class="mono when"><span class="when-due">Tomorrow</span><span class="when-paid" aria-hidden="true"><span class="check"></span>Paid</span></span><span class="mono amt">R99.00</span></li>
+          <li style="--i:1"><span class="av" style="--c:#1a6b43">G</span><span>Gym membership</span><span class="mono when">Fri 28</span><span class="mono amt">R450.00</span></li>
+          <li style="--i:2"><span class="av" style="--c:#6941c6">C</span><span>Cloud storage</span><span class="mono when">1 Dec</span><span class="mono amt">US$2.99</span></li>
+        </ul>
+      </article>
+
+      <article class="card cell reveal" style="--i:1">
+        <div class="top">
+          <span class="ico"><Icon name="hourglass" /></span>
+          <span class="label">02 / Free trials</span>
+        </div>
+        <h3>Free trials and cancel-by dates</h3>
+        <p>Kepa reminds you before a trial turns into a charge, and before the last day you can cancel.</p>
+        <p class="chip mono">Trial · 3 days left</p>
+      </article>
+
+      <article class="card cell reveal" style="--i:0">
+        <div class="top">
+          <span class="ico"><Icon name="receipt" /></span>
+          <span class="label">03 / Warranties</span>
+        </div>
+        <h3>A vault for warranty slips</h3>
+        <p>Snap the till slip. Kepa reads the store and date on your phone and nudges you before the return window or cover ends.</p>
+      </article>
+
+      <article class="card cell reveal" style="--i:1">
+        <div class="top">
+          <span class="ico"><Icon name="renew" /></span>
+          <span class="label">04 / Renewals</span>
+        </div>
+        <h3>Renewals, every year or five</h3>
+        <p>Licence discs, passports, insurance and contracts, with or without a cost.</p>
+      </article>
+
+      <article class="card cell reveal" style="--i:2">
+        <div class="top">
+          <span class="ico"><Icon name="wallet" /></span>
+          <span class="label">05 / Payday</span>
+        </div>
+        <h3>Payday, built in</h3>
+        <p>Set your payday and see what still has to come out before it.</p>
+        <div class="payday" data-payday>
+          <span class="mono big" data-count="1240" data-decimals="2" data-prefix="R" data-duration="1400">R1,240.00</span>
+          <span class="bar" aria-hidden="true"><span class="bar-fill" style="--p:0.7"></span></span>
+          <span class="label">Left before payday · 6 days</span>
+        </div>
+      </article>
+
+      <article class="card cell wide full reveal" style="--i:0">
+        <div class="top">
+          <span class="ico"><Icon name="file" /></span>
+          <span class="label">06 / Statement import</span>
+        </div>
+        <div class="split">
+          <div class="split-copy">
+            <h3>Find what you forgot</h3>
+            <p>Import a bank statement, PDF or CSV, even password-protected. Kepa finds the charges that repeat and lets you add them in one go. The file is read on your phone and never kept.</p>
+          </div>
+          <div class="found" aria-label="Example: charges found in a statement" data-scan>
+            <span class="scanline" aria-hidden="true"></span>
+            <p class="label">statement.pdf · 4 repeating</p>
+            <ul class="demo-list">
+              <li style="--i:0"><span class="tick" aria-hidden="true"></span><span>Music streaming</span><span class="mono when">Monthly</span><span class="mono amt">R69.99</span></li>
+              <li style="--i:1"><span class="tick" aria-hidden="true"></span><span>Funeral cover</span><span class="mono when">Monthly</span><span class="mono amt">R180.00</span></li>
+              <li style="--i:2"><span class="tick" aria-hidden="true"></span><span>Phone contract</span><span class="mono when">Monthly</span><span class="mono amt">R399.00</span></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-4);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    min-height: 15rem;
+  }
+
+  .wide {
+    grid-column: span 2;
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: auto;
+    padding-bottom: var(--s-6);
+  }
+
+  .ico {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-small);
+    border: 1px solid var(--line);
+    color: var(--primary-text);
+  }
+
+  h3 {
+    font-size: var(--t-h3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .cell p {
+    color: var(--ink-muted);
+    max-width: 36rem;
+  }
+
+  .demo-list {
+    display: grid;
+    margin-top: var(--s-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .demo-list li {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: var(--s-3);
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .av {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-small);
+    background: var(--c);
+    color: #fff;
+    font-weight: 600;
+    font-size: var(--t-small);
+  }
+
+  .when {
+    color: var(--ink-muted);
+    font-size: var(--t-small);
+  }
+
+  .amt {
+    min-width: 6.5ch;
+    text-align: right;
+  }
+
+  .cell .chip {
+    align-self: flex-start;
+    margin-top: var(--s-2);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: var(--t-micro);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-7);
+    align-items: end;
+  }
+
+  .split-copy {
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .found .demo-list {
+    margin-top: var(--s-3);
+  }
+
+  .tick {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    background: var(--primary);
+    position: relative;
+  }
+
+  .tick::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2.5px;
+    width: 4px;
+    height: 9px;
+    border: solid var(--on-primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .payday {
+    display: grid;
+    gap: var(--s-1);
+    margin-top: var(--s-2);
+  }
+
+  /* Payday progress, like the app's Home card. */
+  .bar {
+    display: block;
+    height: 6px;
+    margin-block: var(--s-2) var(--s-1);
+    border-radius: var(--r-pill);
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--primary);
+    transform: scaleX(var(--p));
+    transform-origin: left;
+  }
+
+  /* Subscription card: the first charge flips to Paid. */
+  .when {
+    display: inline-grid;
+    justify-items: end;
+  }
+
+  .when > span {
+    grid-area: 1 / 1;
+  }
+
+  .when-paid {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--success);
+    opacity: 0;
+  }
+
+  .check {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  .check::after {
+    content: '';
+    position: absolute;
+    left: 4.5px;
+    top: 2px;
+    width: 3.5px;
+    height: 7px;
+    border: solid var(--canvas);
+    border-width: 0 1.6px 1.6px 0;
+    transform: rotate(45deg);
+  }
+
+  .subs.paid [data-first] .when-due {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  .subs.paid [data-first] .when-paid {
+    opacity: 1;
+    transform: none;
+  }
+
+  .when-due,
+  .when-paid {
+    transition:
+      opacity 400ms var(--ease-out),
+      transform 400ms var(--ease-out);
+  }
+
+  .when-paid {
+    transform: translateY(6px);
+  }
+
+  /* Import card: the scan line. */
+  .found {
+    position: relative;
+  }
+
+  .scanline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--primary) 60%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Before-states, only when JS runs and motion is allowed. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .subs li {
+      opacity: 0;
+      transform: translateX(-16px);
+      transition:
+        opacity 600ms var(--ease-out),
+        transform 600ms var(--ease-out);
+      transition-delay: calc(var(--i) * 120ms + 150ms);
+    }
+
+    :global(.js) .subs.go li {
+      opacity: 1;
+      transform: none;
+    }
+
+    :global(.js) .found .tick {
+      background: transparent;
+      box-shadow: inset 0 0 0 1.5px var(--line);
+      transition:
+        background-color 250ms var(--ease-state),
+        box-shadow 250ms var(--ease-state);
+      transition-delay: calc(var(--i) * 330ms + 250ms);
+    }
+
+    :global(.js) .found .tick::after {
+      opacity: 0;
+      transition: opacity 200ms var(--ease-state);
+      transition-delay: calc(var(--i) * 330ms + 300ms);
+    }
+
+    :global(.js) .found.go .tick {
+      background: var(--primary);
+      box-shadow: none;
+    }
+
+    :global(.js) .found.go .tick::after {
+      opacity: 1;
+    }
+
+    :global(.js) .bar-fill {
+      transform: scaleX(0);
+      transition: transform 1400ms var(--ease-out) 200ms;
+    }
+
+    :global(.js) .payday.go .bar-fill {
+      transform: scaleX(var(--p));
+    }
+  }
+
+  .payday .big {
+    font-size: 1.75rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 960px) {
+    .bento {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .split {
+      grid-template-columns: 1fr;
+      gap: var(--s-5);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento {
+      grid-template-columns: 1fr;
+    }
+
+    .wide {
+      grid-column: auto;
+    }
+
+    .cell {
+      padding: var(--s-5);
+      min-height: 0;
+    }
+
+    .demo-list li {
+      grid-template-columns: auto 1fr auto auto;
+    }
+
+    .amt {
+      grid-column: 4;
+    }
+
+    /* Dates are hidden on phones, except the first subscription's, which
+       flips to "Paid". */
+    .when {
+      display: none;
+    }
+
+    .subs [data-first] .when {
+      display: inline-grid;
+    }
+  }
+</style>
+
+<script>
+  import { reduced, onceInView, wait, countUps } from '../scripts/motion';
+
+  countUps(document.querySelector('#features') ?? document);
+
+  const subs = document.querySelector<HTMLElement>('[data-subs]');
+  const scan = document.querySelector<HTMLElement>('[data-scan]');
+  const payday = document.querySelector<HTMLElement>('[data-payday]');
+
+  if (subs) {
+    onceInView(subs, async () => {
+      subs.classList.add('go');
+      if (reduced) return;
+      await wait(1900);
+      subs.classList.add('paid');
+    });
+  }
+
+  if (scan) {
+    onceInView(scan, () => {
+      scan.classList.add('go');
+      if (reduced) return;
+      const line = scan.querySelector<HTMLElement>('.scanline');
+      line?.animate(
+        [
+          { opacity: 0, transform: 'translateY(0)' },
+          { opacity: 1, offset: 0.1 },
+          { opacity: 1, offset: 0.9 },
+          { opacity: 0, transform: `translateY(${scan.offsetHeight}px)` },
+        ],
+        { duration: 1300, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+      );
+    }, 0.6);
+  }
+
+  if (payday) onceInView(payday, () => payday.classList.add('go'), 0.6);
+</script>

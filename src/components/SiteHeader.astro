@@ -1,0 +1,210 @@
+---
+import KepaMark from './KepaMark.astro';
+import Icon from './Icon.astro';
+import { nav, primaryCta } from '../site';
+---
+
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <a class="brand enter" style="--i:0" href="/" aria-label="Kepa home">
+      <KepaMark size={30} />
+      <span class="word">kepa</span>
+    </a>
+    <div class="right enter" style="--i:1">
+      <nav class="links" aria-label="Main">
+        {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+      <button class="theme" type="button" data-theme-toggle aria-label="Switch to light mode">
+        <span class="i-sun"><Icon name="sun" size={18} /></span>
+        <span class="i-moon"><Icon name="moon" size={18} /></span>
+      </button>
+      <a class="btn btn--primary cta" href={primaryCta.href} rel="noopener">
+        {primaryCta.label}
+        <span class="arrow"><Icon name="arrow" /></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--d-base) var(--ease-state),
+      border-color var(--d-base) var(--ease-state);
+  }
+
+  .site-header.is-scrolled {
+    background: color-mix(in srgb, var(--canvas) 82%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-height: 72px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .word {
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .links {
+    display: flex;
+    gap: var(--s-1);
+    margin-right: var(--s-2);
+  }
+
+  .links a {
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-small);
+    font-size: 0.875rem;
+    color: var(--ink-muted);
+    transition: color var(--d-fast) var(--ease-state);
+  }
+
+  .links a:hover {
+    color: var(--ink);
+  }
+
+  /* Square icon button, as in the app (SquareIconButton). */
+  .theme {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-small);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color var(--d-fast) var(--ease-state);
+  }
+
+  .theme:hover {
+    border-color: var(--ink-muted);
+  }
+
+  .theme > span {
+    display: grid;
+    grid-area: 1 / 1;
+    transition:
+      opacity var(--d-base) var(--ease-state),
+      transform var(--d-base) var(--ease-out);
+  }
+
+  /* Dark shows the sun (switch to light); light shows the moon. */
+  .i-moon {
+    opacity: 0;
+    transform: rotate(-60deg) scale(0.6);
+  }
+
+  :global(:root[data-theme='light']) .i-sun {
+    opacity: 0;
+    transform: rotate(60deg) scale(0.6);
+  }
+
+  :global(:root[data-theme='light']) .i-moon {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :global(:root:not([data-theme='dark'])) .i-sun {
+      opacity: 0;
+      transform: rotate(60deg) scale(0.6);
+    }
+
+    :global(:root:not([data-theme='dark'])) .i-moon {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .cta {
+    min-height: 42px;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 760px) {
+    .bar {
+      min-height: 64px;
+    }
+
+    .links {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // The saved choice is applied before paint by the inline script in Base.astro.
+  const root = document.documentElement;
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const system = window.matchMedia('(prefers-color-scheme: light)');
+  const current = () => (root.dataset.theme ?? (system.matches ? 'light' : 'dark')) as 'light' | 'dark';
+
+  const sync = () => {
+    const t = current();
+    button?.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    document
+      .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((m) => (m.content = t === 'dark' ? '#121417' : '#eceef1'));
+  };
+
+  const apply = (next: 'light' | 'dark') => {
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('kepa-theme', next);
+    } catch {
+      // Private mode or blocked storage: the choice lasts for this page only.
+    }
+    sync();
+  };
+
+  button?.addEventListener('click', () => {
+    const next = current() === 'dark' ? 'light' : 'dark';
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !document.startViewTransition || !button || document.hidden) return apply(next);
+
+    // The new theme spreads out in a circle from the toggle.
+    const r = button.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const transition = document.startViewTransition(() => apply(next));
+    // If the browser skips the transition, the theme is still applied.
+    transition.finished.catch(() => {});
+    transition.ready
+      .then(() => {
+        root.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' },
+        );
+      })
+      .catch(() => {});
+  });
+  system.addEventListener('change', sync);
+  sync();
+</script>

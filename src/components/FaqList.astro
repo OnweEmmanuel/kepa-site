@@ -1,0 +1,72 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { q: string; a: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((f, i) => (
+      <details class="reveal" style={`--i:${i % 4}`}>
+        <summary>
+          <span>{f.q}</span>
+          <span class="chev">
+            <Icon name="plus" size={18} />
+          </span>
+        </summary>
+        <p>{f.a}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    border-top: 1px solid var(--line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-4);
+    padding-block: var(--s-5);
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .chev {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    transition: transform var(--d-base) var(--ease-out);
+  }
+
+  details[open] .chev {
+    transform: rotate(45deg);
+  }
+
+  details p {
+    max-width: 44rem;
+    padding-bottom: var(--s-5);
+    color: var(--ink-muted);
+  }
+</style>
